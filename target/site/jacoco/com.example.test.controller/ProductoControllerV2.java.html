@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductoControllerV2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">test</a> &gt; <a href="index.source.html" class="el_package">com.example.test.controller</a> &gt; <span class="el_source">ProductoControllerV2.java</span></div><h1>ProductoControllerV2.java</h1><pre class="source lang-java linenums">package com.example.test.controller;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.test.assemblers.ProductoModelAssembler;
+import com.example.test.model.Producto;
+import com.example.test.services.ProductoService;
+
+
+@RestController
+@RequestMapping(&quot;/producto&quot;)
+<span class="fc" id="L30">public class ProductoControllerV2 {</span>
+
+    @Autowired
+    public ProductoService productoService;
+
+    @Autowired
+    private ProductoModelAssembler assembler;
+
+    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel&lt;EntityModel&lt;Producto&gt;&gt; getAllProductos(){
+<span class="fc" id="L40">        List&lt;EntityModel&lt;Producto&gt;&gt; producto= productoService.getProductos().stream()</span>
+<span class="fc" id="L41">        .map(assembler::toModel).collect(Collectors.toList());</span>
+<span class="fc" id="L42">        return CollectionModel.of(producto,</span>
+<span class="fc" id="L43">                linkTo(methodOn(ProductoControllerV2.class).getAllProductos()).withSelfRel());</span>
+    }
+
+    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity&lt;EntityModel&lt;Producto&gt;&gt; createCot(@RequestBody Producto producto){
+<span class="fc" id="L48">        Producto newProducto= productoService.agregarProducto(producto);</span>
+<span class="fc" id="L49">        return ResponseEntity.created(linkTo(methodOn(ProductoControllerV2.class).getProductoByCodigo(newProducto.getId())).toUri())</span>
+<span class="fc" id="L50">        .body(assembler.toModel(newProducto));</span>
+    }
+
+    @GetMapping(value = &quot;/{id}&quot;,produces = MediaTypes.HAL_JSON_VALUE)
+    public EntityModel&lt;Producto&gt; getProductoByCodigo(@PathVariable int id){
+<span class="fc" id="L55">        Producto producto= productoService.buscarProducto(id);</span>
+<span class="fc" id="L56">        return assembler.toModel(producto);</span>
+    }
+
+    @PutMapping(value = &quot;/act/{id}&quot;,produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity&lt;EntityModel&lt;Producto&gt;&gt; actualizarCot(@PathVariable int id,@RequestBody Producto producto){
+<span class="fc" id="L61">            producto.setId(id);</span>
+<span class="fc" id="L62">            Producto updateProducto = productoService.modificaProducto(producto);</span>
+<span class="fc" id="L63">            return ResponseEntity.ok(assembler.toModel(updateProducto));</span>
+    }
+
+    @DeleteMapping(value = &quot;{id}&quot;,produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity&lt;?&gt; eliminarCot(@PathVariable int id){
+<span class="fc" id="L68">            productoService.eliminarProducto(id);</span>
+<span class="fc" id="L69">            return ResponseEntity.noContent().build();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
