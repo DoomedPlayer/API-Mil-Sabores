@@ -27,7 +27,7 @@ import com.example.test.services.ProductoService;
 
 @RestController
 @RequestMapping(&quot;/producto&quot;)
-<span class="fc" id="L30">public class ProductoControllerV2 {</span>
+<span class="nc" id="L30">public class ProductoControllerV2 {</span>
 
     @Autowired
     public ProductoService productoService;
@@ -37,36 +37,36 @@ import com.example.test.services.ProductoService;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel&lt;EntityModel&lt;Producto&gt;&gt; getAllProductos(){
-<span class="fc" id="L40">        List&lt;EntityModel&lt;Producto&gt;&gt; producto= productoService.getProductos().stream()</span>
-<span class="fc" id="L41">        .map(assembler::toModel).collect(Collectors.toList());</span>
-<span class="fc" id="L42">        return CollectionModel.of(producto,</span>
-<span class="fc" id="L43">                linkTo(methodOn(ProductoControllerV2.class).getAllProductos()).withSelfRel());</span>
+<span class="nc" id="L40">        List&lt;EntityModel&lt;Producto&gt;&gt; producto= productoService.getProductos().stream()</span>
+<span class="nc" id="L41">        .map(assembler::toModel).collect(Collectors.toList());</span>
+<span class="nc" id="L42">        return CollectionModel.of(producto,</span>
+<span class="nc" id="L43">                linkTo(methodOn(ProductoControllerV2.class).getAllProductos()).withSelfRel());</span>
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity&lt;EntityModel&lt;Producto&gt;&gt; createCot(@RequestBody Producto producto){
-<span class="fc" id="L48">        Producto newProducto= productoService.agregarProducto(producto);</span>
-<span class="fc" id="L49">        return ResponseEntity.created(linkTo(methodOn(ProductoControllerV2.class).getProductoByCodigo(newProducto.getId())).toUri())</span>
-<span class="fc" id="L50">        .body(assembler.toModel(newProducto));</span>
+<span class="nc" id="L48">        Producto newProducto= productoService.agregarProducto(producto);</span>
+<span class="nc" id="L49">        return ResponseEntity.created(linkTo(methodOn(ProductoControllerV2.class).getProductoByCodigo(newProducto.getCode())).toUri())</span>
+<span class="nc" id="L50">        .body(assembler.toModel(newProducto));</span>
     }
 
     @GetMapping(value = &quot;/{id}&quot;,produces = MediaTypes.HAL_JSON_VALUE)
     public EntityModel&lt;Producto&gt; getProductoByCodigo(@PathVariable int id){
-<span class="fc" id="L55">        Producto producto= productoService.buscarProducto(id);</span>
-<span class="fc" id="L56">        return assembler.toModel(producto);</span>
+<span class="nc" id="L55">        Producto producto= productoService.buscarProducto(id);</span>
+<span class="nc" id="L56">        return assembler.toModel(producto);</span>
     }
 
     @PutMapping(value = &quot;/act/{id}&quot;,produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity&lt;EntityModel&lt;Producto&gt;&gt; actualizarCot(@PathVariable int id,@RequestBody Producto producto){
-<span class="fc" id="L61">            producto.setId(id);</span>
-<span class="fc" id="L62">            Producto updateProducto = productoService.modificaProducto(producto);</span>
-<span class="fc" id="L63">            return ResponseEntity.ok(assembler.toModel(updateProducto));</span>
+<span class="nc" id="L61">            producto.setCode(id);</span>
+<span class="nc" id="L62">            Producto updateProducto = productoService.modificaProducto(producto);</span>
+<span class="nc" id="L63">            return ResponseEntity.ok(assembler.toModel(updateProducto));</span>
     }
 
     @DeleteMapping(value = &quot;{id}&quot;,produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity&lt;?&gt; eliminarCot(@PathVariable int id){
-<span class="fc" id="L68">            productoService.eliminarProducto(id);</span>
-<span class="fc" id="L69">            return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L68">            productoService.eliminarProducto(id);</span>
+<span class="nc" id="L69">            return ResponseEntity.noContent().build();</span>
     }
 
 }

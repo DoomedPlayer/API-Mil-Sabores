@@ -12,16 +12,16 @@ import com.example.test.controller.ProductoControllerV2;
 
 
 @Component
-<span class="fc" id="L15">public class ProductoModelAssembler implements RepresentationModelAssembler&lt;Producto, EntityModel&lt;Producto&gt;&gt;{</span>
+<span class="nc" id="L15">public class ProductoModelAssembler implements RepresentationModelAssembler&lt;Producto, EntityModel&lt;Producto&gt;&gt;{</span>
 
     @Override
     public EntityModel&lt;Producto&gt; toModel(@NonNull Producto producto){
-<span class="fc bfc" id="L19" title="All 2 branches covered.">        if(producto == null){</span>
-<span class="fc" id="L20">            return EntityModel.of(new Producto());</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if(producto == null){</span>
+<span class="nc" id="L20">            return EntityModel.of(new Producto());</span>
         }
-<span class="fc" id="L22">        return EntityModel.of(producto,</span>
-<span class="fc" id="L23">        linkTo(methodOn(ProductoControllerV2.class).getProductoByCodigo(producto.getId())).withSelfRel(),</span>
-<span class="fc" id="L24">        linkTo(methodOn(ProductoControllerV2.class).getAllProductos()).withRel(&quot;productos&quot;));</span>
+<span class="nc" id="L22">        return EntityModel.of(producto,</span>
+<span class="nc" id="L23">        linkTo(methodOn(ProductoControllerV2.class).getProductoByCodigo(producto.getCode())).withSelfRel(),</span>
+<span class="nc" id="L24">        linkTo(methodOn(ProductoControllerV2.class).getAllProductos()).withRel(&quot;productos&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

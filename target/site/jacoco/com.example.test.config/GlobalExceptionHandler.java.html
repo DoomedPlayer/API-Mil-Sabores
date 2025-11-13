@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
-<span class="fc" id="L14">public class GlobalExceptionHandler {</span>
+<span class="nc" id="L14">public class GlobalExceptionHandler {</span>
 
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ResponseEntity&lt;Problem&gt; handleNoSuchElementException(NoSuchElementException ex) {
-<span class="fc" id="L20">        return ResponseEntity</span>
-<span class="fc" id="L21">                .status(HttpStatus.NOT_FOUND)</span>
-<span class="fc" id="L22">                .body(Problem.create()</span>
-<span class="fc" id="L23">                        .withTitle(&quot;Not Found&quot;)</span>
-<span class="fc" id="L24">                        .withDetail(ex.getMessage()));</span>
+<span class="nc" id="L20">        return ResponseEntity</span>
+<span class="nc" id="L21">                .status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L22">                .body(Problem.create()</span>
+<span class="nc" id="L23">                        .withTitle(&quot;Not Found&quot;)</span>
+<span class="nc" id="L24">                        .withDetail(ex.getMessage()));</span>
     }
     
 }

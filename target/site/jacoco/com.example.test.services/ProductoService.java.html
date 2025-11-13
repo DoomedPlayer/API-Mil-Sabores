@@ -12,29 +12,29 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-<span class="fc" id="L15">public class ProductoService {</span>
+<span class="nc" id="L15">public class ProductoService {</span>
 
     @Autowired
     public ProductoRepositoryI productoRepository;
 
     public List&lt;Producto&gt; getProductos(){
-<span class="fc" id="L21">        return productoRepository.findAll();</span>
+<span class="nc" id="L21">        return productoRepository.findAll();</span>
     }
 
     public Producto buscarProducto(int id){
-<span class="fc" id="L25">        return productoRepository.findById(id).get();</span>
+<span class="nc" id="L25">        return productoRepository.findById(id).get();</span>
     }
 
     public Producto agregarProducto(Producto producto){
-<span class="fc" id="L29">        return productoRepository.save(producto);</span>
+<span class="nc" id="L29">        return productoRepository.save(producto);</span>
     }
 
     public Producto modificaProducto(Producto producto){
-<span class="fc" id="L33">        return productoRepository.save(producto);</span>
+<span class="nc" id="L33">        return productoRepository.save(producto);</span>
     }
 
     public void eliminarProducto(int id){
-<span class="fc" id="L37">        productoRepository.deleteById(id);</span>
-<span class="fc" id="L38">    }</span>
+<span class="nc" id="L37">        productoRepository.deleteById(id);</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
