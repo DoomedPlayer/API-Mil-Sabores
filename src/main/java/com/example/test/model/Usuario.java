@@ -3,50 +3,107 @@ package com.example.test.model;
 import jakarta.persistence.Column;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Table;
-import lombok.Data;
 
 @Entity
 @Table(name="usuario")
-@Data
-
-
-public abstract class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
-    @Column(unique = true,length = 13,nullable = false)
-    private Long rut;
-    @Column(length=1,nullable = false)
-    private String dv;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(nullable = false)
     private String nombre;
-    @Column(nullable = true)
-    private Long telefono;
-    @Column(nullable = false)
-    private String correo;
-    @Column(nullable = false)
-    private String nombreUsuario;
+    @Column(unique = true,nullable = false)
+    private String email;
     @Column(nullable = false)
     private String contraseña;
+    @Column 
+    private LocalDate fechaNacimiento;
     @Column(nullable = false)
-    private int tipoUser;
+    private Role role;
 
-
-    public Usuario(){
-        this.rut =0L;
+    public Long getId() { 
+        return id;
     }
 
-    public Usuario(Long rut,String dv,String nombre,Long telefono,String correo, String nombreUsuario, String contraseña, int tipoUser){
-        this.rut=rut;
-        this.dv=dv;
-        this.nombre=nombre;
-        this.telefono=telefono;
-        this.correo=correo;
-        this.nombreUsuario=nombreUsuario;
-        this.contraseña= contraseña;
-        this.tipoUser= tipoUser;
+    public void setId(Long id) { 
+        this.id = id;
     }
+
+    public String getNombre() { 
+        return nombre;
+    }
+
+    public void setNombre(String nombre) { 
+        this.nombre = nombre;
+    }
+
+    public String getEmail() { 
+        return email;
+    }
+
+    public void setEmail(String email) { 
+        this.email = email;
+    }
+
+    public String getContraseña() { 
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) { 
+        this.contraseña = contraseña;
+    }
+
+    public LocalDate getFechaNacimiento() { 
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) { 
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Role getRole() { 
+        return role;
+    }
+
+    public void setRole(Role role) { 
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities(){
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword(){
+        return contraseña;
+    }
+
+    @Override
+    public String getUsername(){
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired(){return true;}
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+    @Override
+    public boolean isEnabled() { return true; }
 }
 
