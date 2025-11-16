@@ -27,6 +27,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 import com.example.test.model.Producto;
+import com.example.test.services.ImageService;
 import com.example.test.services.ProductoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +39,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Producto", description = "Operaciones relacionadas con los productos")
 public class ProductoController {
     @Autowired
-    public ProductoService productoService;
+    private ProductoService productoService;
+
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping
     @Operation(summary = "Obtener todos los productos", description = "Obtiene una lista de todos los productos")
@@ -61,9 +65,6 @@ public class ProductoController {
         }
     }
 
-    @Value("${file.upload-dir}")
-    private String UPLOAD_DIR;
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Crea un nuevo producto", description = "Agrega un nuevo producto")
     public ResponseEntity<Producto> agregarProducto(@RequestParam("name") String name,
@@ -71,9 +72,11 @@ public class ProductoController {
             @RequestParam("price") int price,
             @RequestParam("type") String type,
             @RequestParam("description") String description,
-            @RequestParam(value = "file", required = false) MultipartFile file
+            @RequestParam("image") MultipartFile file
     ){
         try {
+           String urlImagen = imageService.uploadImage(file);
+
             Producto producto = new Producto();
             producto.setName(name);
             producto.setCategory(category);
@@ -83,14 +86,7 @@ public class ProductoController {
 
             // Lógica para guardar la imagen si existe
             if (file != null && !file.isEmpty()) {
-                // 1. Generar nombre único para evitar colisiones (opcional pero recomendado)
-                String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-                // 2. Crear la ruta destino
-                Path path = Paths.get(UPLOAD_DIR + fileName);
-                // 3. Guardar el archivo físico
-                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-                // 4. Guardar SOLO el nombre del archivo en la BD
-                producto.setImage(fileName);
+                producto.setImage(urlImagen);
             } else {
                 producto.setImage("default.jpg"); // Imagen por defecto si no suben nada
             }
