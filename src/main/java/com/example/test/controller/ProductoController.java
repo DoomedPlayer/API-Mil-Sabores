@@ -45,7 +45,6 @@ public class ProductoController {
     @Autowired
     private ImageService imageService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     @Operation(summary = "Obtener todos los productos", description = "Obtiene una lista de todos los productos")
     public ResponseEntity<List<Producto>> obtenerProductos(){
