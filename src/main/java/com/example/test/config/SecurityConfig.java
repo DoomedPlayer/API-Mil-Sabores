@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/producto/**").permitAll()
                 .requestMatchers("/api/producto/**").hasAuthority("Admin")
+                .requestMatchers("/api/usuario/**").hasAuthority("Admin")
                 .requestMatchers("/images/**").permitAll()
                 .anyRequest().authenticated()
             )
